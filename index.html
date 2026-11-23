@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#08090c">
-<meta name="description" content="RykenRealm is a multifunctional Discord bot featuring economy, adventures, dungeon challenges, games, and more.">
+<meta name="description" content="Discover RykenRealm, a multifunctional Discord bot featuring economy, adventures, Dungeon Tempest, games, and more.">
 <title>RykenRealm — Official Website</title>
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 
 <style>
 :root {
+  color-scheme: dark;
   --bg: #08090c;
-  --panel: #101217;
-  --panel-soft: #141720;
-  --border: rgba(255,255,255,.09);
-  --text: #f4f5f7;
-  --muted: #9298a5;
+  --panel: #101218;
+  --panel2: #151823;
+  --border: rgba(255,255,255,.085);
+  --text: #f4f4f7;
+  --muted: #969ba8;
   --accent: #c9b8ff;
-  --accent-soft: rgba(201,184,255,.12);
+  --accent-glow: rgba(151,119,235,.18);
   --radius: 18px;
+  --container: 1160px;
 }
 
 * {
@@ -29,15 +31,23 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.6;
-  overflow-x: hidden;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.menu-open {
+  overflow: hidden;
 }
 
 a {
@@ -49,41 +59,52 @@ button {
   font: inherit;
 }
 
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .container {
-  width: min(1120px, calc(100% - 40px));
-  margin: auto;
+  width: min(var(--container), calc(100% - 48px));
+  margin-inline: auto;
 }
 
 /* Background */
 
 .background-glow {
   position: absolute;
-  top: -240px;
+  width: min(900px, 100vw);
+  height: 650px;
+  top: -260px;
   left: 50%;
   transform: translateX(-50%);
-  width: 850px;
-  height: 600px;
   background: radial-gradient(
     ellipse,
-    rgba(126,95,210,.16),
+    rgba(126,95,210,.17),
     transparent 68%
   );
   pointer-events: none;
   z-index: -1;
+  animation: glowPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { opacity: .55; }
+  to { opacity: 1; }
 }
 
 /* Header */
 
 header {
-  height: 78px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
+  height: 76px;
   position: sticky;
   top: 0;
   z-index: 20;
+  display: flex;
+  align-items: center;
   background: rgba(8,9,12,.82);
+  border-bottom: 1px solid var(--border);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .navbar {
@@ -99,50 +120,54 @@ header {
 }
 
 .brand-icon {
-  width: 43px;
-  height: 43px;
-  border-radius: 13px;
-  background: #f5f5f5;
-  color: #08090c;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
   display: grid;
   place-items: center;
-  font-size: 31px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -3px;
   padding-right: 3px;
+  border-radius: 13px;
+  background: #f4f4f4;
+  color: #08090c;
+  font-size: 32px;
+  font-weight: 950;
+  letter-spacing: -4px;
+  line-height: 1;
 }
 
 .brand-name {
   font-size: 17px;
-  font-weight: 750;
+  font-weight: 780;
   letter-spacing: -.5px;
 }
 
 .brand-label {
   display: block;
-  font-size: 9px;
+  margin-top: -3px;
   color: var(--muted);
-  letter-spacing: 2px;
+  font-size: 9px;
   font-weight: 650;
-  margin-top: -2px;
+  letter-spacing: 2px;
 }
 
 .menu-button {
-  width: 43px;
-  height: 43px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
   border: 1px solid var(--border);
   border-radius: 13px;
   background: var(--panel);
   color: white;
-  font-size: 23px;
+  font-size: 25px;
   cursor: pointer;
-  transition: .2s;
+  transition: background .25s, border-color .25s, transform .25s;
 }
 
 .menu-button:hover {
-  background: var(--panel-soft);
-  border-color: rgba(255,255,255,.22);
+  background: var(--panel2);
+  border-color: rgba(255,255,255,.2);
+  transform: translateY(-2px);
 }
 
 /* Sidebar */
@@ -150,11 +175,12 @@ header {
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.62);
   z-index: 29;
+  background: rgba(0,0,0,.65);
   opacity: 0;
   visibility: hidden;
-  transition: .25s;
+  transition: opacity .3s, visibility .3s;
+  backdrop-filter: blur(3px);
 }
 
 .sidebar {
@@ -162,13 +188,14 @@ header {
   z-index: 30;
   top: 0;
   right: 0;
-  width: min(340px, 88%);
+  width: min(360px, 88vw);
+  height: 100vh;
   height: 100dvh;
-  padding: 27px;
+  padding: 28px;
   background: #101116;
   border-left: 1px solid var(--border);
-  transform: translateX(100%);
-  transition: .3s ease;
+  transform: translateX(105%);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
 }
 
 body.menu-open .sidebar {
@@ -182,29 +209,33 @@ body.menu-open .overlay {
 
 .sidebar-top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 38px;
 }
 
 .sidebar-title {
-  font-size: 13px;
   color: var(--muted);
-  letter-spacing: 1.5px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
 }
 
 .close-button {
-  background: none;
-  border: none;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--panel);
   color: white;
-  font-size: 25px;
+  font-size: 23px;
   cursor: pointer;
 }
 
 .sidebar nav {
   display: grid;
-  gap: 7px;
+  gap: 8px;
 }
 
 .sidebar nav a {
@@ -212,22 +243,23 @@ body.menu-open .overlay {
   border-radius: 11px;
   color: #c5c8d0;
   font-size: 14px;
-  transition: .2s;
+  transition: background .2s, color .2s, padding .2s;
 }
 
 .sidebar nav a:hover,
 .sidebar nav a.active {
-  background: var(--accent-soft);
+  padding-left: 19px;
+  background: rgba(201,184,255,.11);
   color: var(--accent);
 }
 
 .sidebar-bottom {
   position: absolute;
   bottom: 28px;
-  left: 27px;
-  right: 27px;
-  border-top: 1px solid var(--border);
+  left: 28px;
+  right: 28px;
   padding-top: 18px;
+  border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 11px;
 }
@@ -235,13 +267,16 @@ body.menu-open .overlay {
 /* Hero */
 
 .hero {
-  min-height: 660px;
+  min-height: min(720px, calc(100svh - 76px));
   display: grid;
   grid-template-columns: 1.05fr .95fr;
   align-items: center;
-  gap: 60px;
-  padding-top: 55px;
-  padding-bottom: 90px;
+  gap: clamp(35px, 6vw, 80px);
+  padding-block: clamp(65px, 9vw, 110px);
+}
+
+.hero-content {
+  animation: enterUp .8s both;
 }
 
 .eyebrow {
@@ -250,51 +285,57 @@ body.menu-open .overlay {
   gap: 9px;
   padding: 7px 12px;
   border: 1px solid rgba(201,184,255,.2);
-  background: var(--accent-soft);
   border-radius: 30px;
+  background: rgba(201,184,255,.09);
   color: var(--accent);
   font-size: 10px;
   font-weight: 750;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
+  letter-spacing: 1.6px;
 }
 
 .eyebrow-dot {
   width: 6px;
   height: 6px;
-  background: var(--accent);
+  flex-shrink: 0;
   border-radius: 50%;
+  background: var(--accent);
   box-shadow: 0 0 12px var(--accent);
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% { opacity: .4; }
 }
 
 .hero h1 {
-  font-size: clamp(46px, 6.5vw, 76px);
-  line-height: 1.04;
-  letter-spacing: -4px;
-  font-weight: 820;
-  margin: 25px 0 22px;
+  margin-block: 25px 20px;
+  font-size: clamp(43px, 6vw, 78px);
+  line-height: 1.06;
+  letter-spacing: -.065em;
+  font-weight: 850;
 }
 
 .hero h1 span {
   color: var(--accent);
+  text-shadow: 0 0 45px rgba(201,184,255,.12);
 }
 
 .hero-description {
-  color: var(--muted);
   max-width: 510px;
-  font-size: 15px;
-  line-height: 1.9;
+  color: var(--muted);
+  font-size: clamp(13px, 1.2vw, 15px);
+  line-height: 1.95;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 34px;
+  margin-top: 32px;
 }
 
 .button {
-  min-height: 48px;
+  min-height: 49px;
   padding: 0 21px;
   display: inline-flex;
   align-items: center;
@@ -302,8 +343,8 @@ body.menu-open .overlay {
   gap: 10px;
   border-radius: 12px;
   font-size: 13px;
-  font-weight: 700;
-  transition: .2s;
+  font-weight: 750;
+  transition: transform .25s, background .25s, border-color .25s;
 }
 
 .button-primary {
@@ -313,7 +354,8 @@ body.menu-open .overlay {
 
 .button-primary:hover {
   background: white;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255,255,255,.08);
 }
 
 .button-secondary {
@@ -323,71 +365,86 @@ body.menu-open .overlay {
 }
 
 .button-secondary:hover {
-  background: var(--panel-soft);
+  background: var(--panel2);
   border-color: rgba(255,255,255,.22);
+  transform: translateY(-3px);
 }
 
 /* Hero visual */
 
 .hero-visual {
   position: relative;
+  min-width: 0;
   min-height: 390px;
   display: grid;
   place-items: center;
+  animation: enterUp .9s .15s both;
 }
 
 .visual-glow {
   position: absolute;
-  width: 340px;
-  height: 340px;
+  width: 95%;
+  aspect-ratio: 1;
+  max-width: 430px;
+  border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(150,119,230,.18),
+    rgba(150,119,230,.2),
     transparent 70%
   );
+  animation: floatGlow 7s ease-in-out infinite alternate;
+}
+
+@keyframes floatGlow {
+  from { transform: scale(.92); }
+  to { transform: scale(1.08); }
 }
 
 .visual-card {
   position: relative;
-  width: min(100%, 390px);
-  padding: 25px;
+  width: min(100%, 410px);
+  padding: clamp(18px, 3vw, 27px);
   border: 1px solid rgba(255,255,255,.12);
-  border-radius: 24px;
-  background: linear-gradient(
-    145deg,
-    rgba(28,30,42,.96),
-    rgba(13,14,19,.97)
-  );
+  border-radius: 23px;
+  background: linear-gradient(145deg, #1b1e29, #0d0e13);
   box-shadow: 0 35px 100px rgba(0,0,0,.42);
-  transform: rotate(2deg);
+  animation: floating 6s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0) rotate(1deg); }
+  50% { transform: translateY(-10px) rotate(-1deg); }
 }
 
 .visual-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 22px;
+  gap: 10px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--border);
 }
 
 .visual-brand {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
+  min-width: 0;
 }
 
 .visual-logo {
-  width: 38px;
-  height: 38px;
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  padding-right: 3px;
   border-radius: 11px;
   background: #f3f3f3;
   color: #08090c;
-  display: grid;
-  place-items: center;
   font-size: 28px;
-  font-weight: 900;
-  letter-spacing: -3px;
-  padding-right: 3px;
+  font-weight: 950;
+  letter-spacing: -4px;
 }
 
 .visual-brand strong {
@@ -401,70 +458,81 @@ body.menu-open .overlay {
 }
 
 .status {
-  color: #a8e5bf;
-  font-size: 10px;
-  background: rgba(92,190,130,.1);
-  border: 1px solid rgba(92,190,130,.2);
+  flex-shrink: 0;
   padding: 5px 9px;
+  border: 1px solid rgba(92,190,130,.2);
   border-radius: 20px;
+  background: rgba(92,190,130,.1);
+  color: #a8e5bf;
+  font-size: 9px;
 }
 
 .visual-heading {
-  margin: 25px 0 7px;
-  font-size: 20px;
-  font-weight: 750;
+  margin-top: 24px;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 780;
   letter-spacing: -.6px;
 }
 
 .visual-subtitle {
+  margin-top: 4px;
   color: var(--muted);
   font-size: 11px;
 }
 
 .visual-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 22px;
 }
 
 .visual-item {
-  min-height: 83px;
+  min-width: 0;
+  min-height: 84px;
+  padding: 12px;
   border: 1px solid var(--border);
   border-radius: 13px;
   background: rgba(255,255,255,.025);
-  padding: 13px;
+  transition: background .25s, border-color .25s, transform .25s;
+}
+
+.visual-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201,184,255,.3);
+  background: rgba(201,184,255,.06);
 }
 
 .visual-item span {
   display: block;
+  margin-bottom: 5px;
   color: var(--accent);
   font-size: 17px;
-  margin-bottom: 5px;
 }
 
 .visual-item strong {
+  display: block;
   font-size: 11px;
-  font-weight: 650;
+  line-height: 1.4;
 }
 
 .visual-item small {
   display: block;
+  margin-top: 3px;
   color: var(--muted);
   font-size: 9px;
-  margin-top: 2px;
 }
 
 /* Sections */
 
 .section {
-  padding: 85px 0;
+  padding-block: clamp(65px, 8vw, 95px);
   border-top: 1px solid var(--border);
 }
 
 .section-heading {
-  max-width: 600px;
-  margin-bottom: 35px;
+  max-width: 620px;
+  margin-bottom: 36px;
 }
 
 .section-label {
@@ -476,66 +544,71 @@ body.menu-open .overlay {
 }
 
 .section-heading h2 {
-  font-size: clamp(29px, 4vw, 43px);
-  letter-spacing: -1.8px;
-  line-height: 1.15;
-  margin: 13px 0;
+  margin-block: 12px;
+  font-size: clamp(29px, 4vw, 44px);
+  line-height: 1.2;
+  letter-spacing: -.055em;
 }
 
 .section-heading p {
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.85;
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
 }
 
 .feature-card {
-  min-height: 185px;
-  padding: 23px;
-  background: linear-gradient(145deg, #12151d, #0d0f14);
+  min-width: 0;
+  min-height: 190px;
+  padding: clamp(19px, 2.5vw, 25px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  transition: .25s;
+  background: linear-gradient(145deg, #12151d, #0d0f14);
+  transition: transform .3s, border-color .3s, background .3s;
+  animation: enterUp .7s both;
 }
 
 .feature-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201,184,255,.3);
+  transform: translateY(-6px);
+  border-color: rgba(201,184,255,.28);
+  background: linear-gradient(145deg, #171a25, #101218);
 }
 
 .feature-icon {
-  width: 39px;
-  height: 39px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
+  margin-bottom: 18px;
   border-radius: 12px;
-  background: var(--accent-soft);
+  background: var(--accent-glow);
   color: var(--accent);
   font-size: 17px;
-  margin-bottom: 19px;
 }
 
 .feature-card h3 {
-  font-size: 14px;
   margin-bottom: 7px;
+  font-size: 14px;
 }
 
 .feature-card p {
   color: var(--muted);
   font-size: 12px;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 /* CTA */
 
 .cta {
-  padding: 65px 30px;
-  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-block: 0 clamp(60px, 8vw, 90px);
+  padding: clamp(42px, 7vw, 70px) 25px;
   border: 1px solid rgba(201,184,255,.16);
   border-radius: 24px;
   background:
@@ -545,20 +618,21 @@ body.menu-open .overlay {
       transparent 70%
     ),
     #101116;
-  margin-bottom: 85px;
+  text-align: center;
 }
 
 .cta h2 {
-  font-size: clamp(28px, 4vw, 40px);
-  letter-spacing: -1.5px;
-  margin-bottom: 12px;
+  margin-block: 12px;
+  font-size: clamp(27px, 4vw, 42px);
+  letter-spacing: -.055em;
 }
 
 .cta p {
   max-width: 510px;
-  margin: auto;
+  margin-inline: auto;
   color: var(--muted);
   font-size: 13px;
+  line-height: 1.85;
 }
 
 .cta .button {
@@ -568,19 +642,20 @@ body.menu-open .overlay {
 /* Footer */
 
 footer {
+  padding-block: 28px;
   border-top: 1px solid var(--border);
-  padding: 28px 0;
 }
 
 .footer-inner {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
-.footer-copy {
+.footer-copy,
+.footer-links a {
   color: var(--muted);
   font-size: 11px;
 }
@@ -588,50 +663,56 @@ footer {
 .footer-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 19px;
+  gap: 18px;
 }
 
 .footer-links a {
-  color: var(--muted);
-  font-size: 11px;
-  transition: .2s;
+  transition: color .2s;
 }
 
 .footer-links a:hover {
   color: white;
 }
 
-/* Responsive */
+/* Entrance animation */
 
-@media (max-width: 800px) {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    padding-top: 75px;
-    padding-bottom: 65px;
-    min-height: auto;
+@keyframes enterUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
   }
-
-  .hero-visual {
-    min-height: 350px;
-  }
-
-  .visual-card {
-    max-width: 420px;
-  }
-
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 520px) {
+/* Tablet */
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 6vw, 59px);
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
   .container {
-    width: min(100% - 32px, 1120px);
+    width: calc(100% - 36px);
   }
 
   header {
-    height: 69px;
+    height: 68px;
   }
 
   .brand-icon {
@@ -641,37 +722,81 @@ footer {
   }
 
   .hero {
-    padding-top: 65px;
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding-block: 65px 60px;
   }
 
   .hero h1 {
-    font-size: 49px;
-    letter-spacing: -2.8px;
+    margin-block: 22px 17px;
+    font-size: clamp(43px, 11vw, 58px);
+    letter-spacing: -.065em;
   }
 
   .hero-description {
     font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .hero-actions {
+    margin-top: 25px;
+    gap: 9px;
+  }
+
+  .button {
+    min-height: 46px;
+    padding-inline: 16px;
+    font-size: 12px;
   }
 
   .hero-visual {
-    min-height: 320px;
+    min-height: 330px;
   }
 
   .visual-card {
-    padding: 19px;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
+    width: min(100%, 430px);
   }
 
   .section {
-    padding: 65px 0;
+    padding-block: 62px;
+  }
+
+  .section-heading {
+    margin-bottom: 27px;
+  }
+
+  .section-heading p {
+    font-size: 13px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .feature-card {
+    min-height: 175px;
+    padding: 16px;
+  }
+
+  .feature-card h3 {
+    font-size: 12px;
+  }
+
+  .feature-card p {
+    font-size: 11px;
+  }
+
+  .feature-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 14px;
   }
 
   .cta {
-    padding: 48px 20px;
     margin-bottom: 60px;
+    padding: 42px 18px;
   }
 
   .footer-inner {
@@ -680,7 +805,74 @@ footer {
   }
 
   .footer-links {
-    gap: 14px;
+    gap: 13px;
+  }
+}
+
+/* Small phones */
+
+@media (max-width: 380px) {
+  .container {
+    width: calc(100% - 28px);
+  }
+
+  .brand-name {
+    font-size: 15px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .visual-card {
+    padding: 15px;
+  }
+
+  .visual-grid {
+    gap: 7px;
+  }
+
+  .visual-item {
+    padding: 9px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card {
+    min-height: auto;
+  }
+}
+
+/* Large screens */
+
+@media (min-width: 1500px) {
+  :root {
+    --container: 1240px;
+  }
+
+  .hero {
+    min-height: 780px;
+  }
+}
+
+/* Respect reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
 }
 </style>
@@ -730,237 +922,156 @@ footer {
 
 <main>
 
-  <!-- HERO -->
-
-  <section class="container hero">
-    <div class="hero-content">
-      <div class="eyebrow">
-        <span class="eyebrow-dot"></span>
-        YOUR DISCORD EXPERIENCE
-      </div>
-
-      <h1>
-        Welcome to<br>
-        <span>RykenRealm.</span>
-      </h1>
-
-      <p class="hero-description">
-        More than just a Discord bot. Explore an experience filled
-        with economy, adventures, dungeon challenges, games,
-        and countless ways to interact with your community.
-      </p>
-
-      <div class="hero-actions">
-        <a class="button button-primary"
-          href="https://discord.com/oauth2/authorize?client_id=1540888527745716285"
-          target="_blank" rel="noopener noreferrer">
-          Invite Bot <span>↗</span>
-        </a>
-
-        <a class="button button-secondary" href="./features.html">
-          Explore Features <span>→</span>
-        </a>
-      </div>
+<section class="container hero">
+  <div class="hero-content">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      YOUR DISCORD EXPERIENCE
     </div>
 
-    <div class="hero-visual">
-      <div class="visual-glow"></div>
+    <h1>
+      Welcome to<br>
+      <span>RykenRealm.</span>
+    </h1>
 
-      <div class="visual-card">
-        <div class="visual-card-top">
-          <div class="visual-brand">
-            <div class="visual-logo">R</div>
-            <div>
-              <strong>RykenRealm</strong>
-              <small>Discord Bot</small>
-            </div>
-          </div>
+    <p class="hero-description">
+      More than just a Discord bot. Explore an experience filled
+      with economy, adventures, dungeon challenges, games,
+      and countless ways to interact with your community.
+    </p>
 
-          <span class="status">Multifunctional</span>
-        </div>
-
-        <div class="visual-heading">Your world, your adventure.</div>
-        <p class="visual-subtitle">
-          Discover what awaits inside RykenRealm.
-        </p>
-
-        <div class="visual-grid">
-          <div class="visual-item">
-            <span>◈</span>
-            <strong>Economy</strong>
-            <small>Trade and manage</small>
-          </div>
-
-          <div class="visual-item">
-            <span>⌁</span>
-            <strong>Adventures</strong>
-            <small>Explore and progress</small>
-          </div>
-
-          <div class="visual-item">
-            <span>⚔</span>
-            <strong>Dungeon Tempest</strong>
-            <small>Face challenges</small>
-          </div>
-
-          <div class="visual-item">
-            <span>◇</span>
-            <strong>Games</strong>
-            <small>Play together</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES PREVIEW -->
-
-  <section class="section">
-    <div class="container">
-      <div class="section-heading">
-        <span class="section-label">Discover RykenRealm</span>
-        <h2>Everything in one realm.</h2>
-        <p>
-          A collection of features designed to bring more
-          activities and interactions to your Discord server.
-        </p>
-      </div>
-
-      <div class="features-grid">
-
-        <article class="feature-card">
-          <div class="feature-icon">◈</div>
-          <h3>Economy & Trading</h3>
-          <p>
-            Build your in-game wealth through an economy
-            with various activities and trading features.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">⌁</div>
-          <h3>Quests & Adventures</h3>
-          <p>
-            Discover quests, explore different locations,
-            and take part in the world of RykenRealm.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">⚔</div>
-          <h3>Dungeon Tempest</h3>
-          <p>
-            Enter dungeon-focused challenges and experience
-            another side of the adventure.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">▣</div>
-          <h3>Items & Inventory</h3>
-          <p>
-            Collect items and manage your inventory
-            as you progress through the experience.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">◇</div>
-          <h3>Games & Activities</h3>
-          <p>
-            Enjoy interactive games and activities
-            with other members of your community.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">✧</div>
-          <h3>More to Discover</h3>
-          <p>
-            Explore additional utilities, social features,
-            and other experiences inside RykenRealm.
-          </p>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CALL TO ACTION -->
-
-  <section class="container">
-    <div class="cta">
-      <span class="section-label">Start Your Journey</span>
-      <h2>Make your server a realm.</h2>
-      <p>
-        Bring RykenRealm into your Discord server
-        and discover everything it has to offer.
-      </p>
-
+    <div class="hero-actions">
       <a class="button button-primary"
         href="https://discord.com/oauth2/authorize?client_id=1540888527745716285"
         target="_blank" rel="noopener noreferrer">
-        Add RykenRealm <span>↗</span>
+        Invite Bot <span>↗</span>
       </a>
-    </div>
-  </section>
 
-</main>
-
-<footer>
-  <div class="container footer-inner">
-    <p class="footer-copy">
-      © <span id="year"></span> RykenRealm. All rights reserved.
-    </p>
-
-    <div class="footer-links">
-      <a href="https://rifkyuser7.github.io/rykenrealm-legal/privacy-policy.html">
-        Privacy Policy
-      </a>
-      <a href="https://rifkyuser7.github.io/rykenrealm-legal/terms-of-service.html">
-        Terms of Service
-      </a>
-      <a href="https://discord.gg/kME469thr6">
-        Support
-      </a>
-      <a href="https://rifkyuser7.github.io/rykenrealm-legal/">
-        Legal Center
+      <a class="button button-secondary" href="./features.html">
+        Explore Features <span>→</span>
       </a>
     </div>
   </div>
-</footer>
 
-<script>
-const menuButton = document.getElementById("menuButton");
-const closeButton = document.getElementById("closeButton");
-const overlay = document.getElementById("overlay");
-const sidebar = document.getElementById("sidebar");
+  <div class="hero-visual">
+    <div class="visual-glow"></div>
 
-function openMenu() {
-  document.body.classList.add("menu-open");
-  menuButton.setAttribute("aria-expanded", "true");
-}
+    <div class="visual-card">
+      <div class="visual-card-top">
+        <div class="visual-brand">
+          <div class="visual-logo">R</div>
+          <div>
+            <strong>RykenRealm</strong>
+            <small>Discord Bot</small>
+          </div>
+        </div>
 
-function closeMenu() {
-  document.body.classList.remove("menu-open");
-  menuButton.setAttribute("aria-expanded", "false");
-}
+        <span class="status">Multifunctional</span>
+      </div>
 
-menuButton.addEventListener("click", openMenu);
-closeButton.addEventListener("click", closeMenu);
-overlay.addEventListener("click", closeMenu);
+      <div class="visual-heading">Your world, your adventure.</div>
+      <p class="visual-subtitle">
+        Discover what awaits inside RykenRealm.
+      </p>
 
-sidebar.querySelectorAll("a").forEach(link => {
-  link.addEventListener("click", closeMenu);
-});
+      <div class="visual-grid">
+        <div class="visual-item">
+          <span>◈</span>
+          <strong>Economy</strong>
+          <small>Trade and manage</small>
+        </div>
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeMenu();
-});
+        <div class="visual-item">
+          <span>⌁</span>
+          <strong>Adventures</strong>
+          <small>Explore and progress</small>
+        </div>
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
-</script>
+        <div class="visual-item">
+          <span>⚔</span>
+          <strong>Dungeon Tempest</strong>
+          <small>Face challenges</small>
+        </div>
 
-</body>
-  </html>
+        <div class="visual-item">
+          <span>◇</span>
+          <strong>Games</strong>
+          <small>Play together</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-label">Discover RykenRealm</span>
+      <h2>Everything in one realm.</h2>
+      <p>
+        A collection of features designed to bring more
+        activities and interactions to your Discord server.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <article class="feature-card">
+        <div class="feature-icon">◈</div>
+        <h3>Economy & Trading</h3>
+        <p>
+          Build your in-game wealth through an economy
+          with various activities and trading features.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">⌁</div>
+        <h3>Quests & Adventures</h3>
+        <p>
+          Discover quests, explore different locations,
+          and take part in the world of RykenRealm.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">⚔</div>
+        <h3>Dungeon Tempest</h3>
+        <p>
+          Enter dungeon-focused challenges and experience
+          another side of the adventure.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">▣</div>
+        <h3>Items & Inventory</h3>
+        <p>
+          Collect items and manage your inventory
+          as you progress through the experience.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">◇</div>
+        <h3>Games & Activities</h3>
+        <p>
+          Enjoy interactive games and activities
+          with other members of your community.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">✧</div>
+        <h3>More to Discover</h3>
+        <p>
+          Explore additional utilities, social features,
+          and other experiences inside RykenRealm.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="cta">
+    <span class="section-
