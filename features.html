@@ -1,1 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0b">
 
+<title>Features — RykenRealm</title>
+<meta name="description" content="Explore the features and systems available in RykenRealm.">
+
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+
+<style>
+:root {
+  --bg: #0b0b0b;
+  --panel: #111111;
+  --panel-hover: #191919;
+  --border: #262626;
+  --text: #ededed;
+  --muted: #929292;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+
+.container {
+  width: min(100% - 40px, 1100px);
+  margin: auto;
+}
+
+/* NAVBAR */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(11, 11, 11, .88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.brand-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  background: white;
+  color: black;
+  border-radius: 9px;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.menu-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.menu-button:hover { background: var(--panel-hover); }
+
+.menu-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* SIDEBAR */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  background: rgba(0, 0, 0, .65);
+  opacity: 0;
+  visibility: hidden;
+  transition: .25s;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 30;
+  width: min(340px, 85vw);
+  height: 100%;
+  padding: 26px;
+  background: #111;
+  border-left: 1px solid var(--border);
+  transform: translateX(100%);
+  transition: transform .3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+body.menu-open .overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.menu-open .sidebar { transform: translateX(0); }
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 38px;
+}
+
+.sidebar-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.close-button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text);
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.nav-label {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  margin-bottom: 13px;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sidebar-links a {
+  padding: 12px 13px;
+  border-radius: 8px;
+  color: #c7c7c7;
+  font-size: 14px;
+  transition: .2s;
+}
+
+.sidebar-links a:hover {
+  color: white;
+  background: var(--panel-hover);
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 25px 0;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* PAGE */
+
+main { min-height: calc(100vh - 190px); }
+
+.page-heading {
+  padding: 85px 0 55px;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: clamp(40px, 7vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+}
+
+.page-description {
+  max-width: 570px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+/* FEATURE GRID */
+
+.features {
+  padding: 0 0 100px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.feature-card {
+  padding: 26px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: background .2s, border-color .2s;
+}
+
+.feature-card:hover {
+  background: #151515;
+  border-color: #414141;
+}
+
+.feature-number {
+  color: #777;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+}
+
+.feature-card h2 {
+  font-size: 19px;
+  letter-spacing: -.3px;
+  margin-bottom: 9px;
+}
+
+.feature-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.feature-card.wide {
+  grid-column: span 2;
+}
+
+/* FOOTER */
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 30px 0;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .8px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.footer-links a:hover { color: white; }
+
+.copyright {
+  width: 100%;
+  color: #666;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+  .container { width: min(100% - 34px, 1100px); }
+  .navbar { height: 64px; }
+  .page-heading { padding: 65px 0 40px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .feature-card.wide { grid-column: span 1; }
+  .feature-card { padding: 23px; }
+  .features { padding-bottom: 65px; }
+  .footer-inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .footer-links { gap: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container navbar">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">R</span>
+      <span>RYKENREALM</span>
+    </a>
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="sidebar"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <circle cx="12" cy="5" r="1.8"/>
+        <circle cx="12" cy="12" r="1.8"/>
+        <circle cx="12" cy="19" r="1.8"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <div class="sidebar-top">
+    <span class="sidebar-title">Navigation</span>
+    <button class="close-button" id="closeButton" aria-label="Close menu">×</button>
+  </div>
+
+  <div class="nav-label">MAIN</div>
+  <nav class="sidebar-links">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="nav-label">EXPLORE</div>
+  <nav class="sidebar-links">
+    <a href="donate.html">Donate</a>
+    <a href="links.html">Social Links</a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    RykenRealm · Official Hub
+  </div>
+</aside>
+
+<main>
+  <section class="container page-heading">
+    <div class="eyebrow">RYKENREALM / FEATURES</div>
+
+    <h1>Explore the features.</h1>
+
+    <p class="page-description">
+      Discover the systems and experiences available in RykenRealm.
+      From virtual economies to interactive adventures, everything
+      comes together in one Discord bot.
+    </p>
+  </section>
+
+  <section class="container features">
+    <div class="feature-grid">
+
+      <article class="feature-card">
+        <div class="feature-number">01 / ECONOMY</div>
+        <h2>Economy & Trading</h2>
+        <p>
+          Build your virtual wealth through an economy system
+          featuring currency, trading, stocks, and other
+          financial activities.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-number">02 / ADVENTURE</div>
+        <h2>Quests & Dungeon Tempest</h2>
+        <p>
+          Take on quests, explore adventure systems, and
+          experience Dungeon Tempest.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-number">03 / INVENTORY</div>
+        <h2>Items & Inventory</h2>
+        <p>
+          Manage your items and keep track of the resources
+          collected throughout your activities.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-number">04 / SOCIAL</div>
+        <h2>Relationship System</h2>
+        <p>
+          Build virtual relationships and explore partner
+          and family-related interactions.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-number">05 / GAMES</div>
+        <h2>Games & Activities</h2>
+        <p>
+          Enjoy interactive games and activities with
+          other members of your Discord server.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-number">06 / UTILITIES</div>
+        <h2>Useful Utilities</h2>
+        <p>
+          Access a collection of helpful tools and
+          everyday utilities directly through Discord.
+        </p>
+      </article>
+
+      <article class="feature-card wide">
+        <div class="feature-number">07 / ACCESSIBILITY</div>
+        <h2>Multi-language Support</h2>
+        <p>
+          RykenRealm supports multiple languages, helping
+          users interact with its features in their preferred
+          language.
+        </p>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <a href="index.html" class="footer-brand">RYKENREALM</a>
+
+    <nav class="footer-links">
+      <a href="https://rifkyuser7.github.io/rykenrealm-legal/privacy-policy.html"
+         target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+
+      <a href="https://rifkyuser7.github.io/rykenrealm-legal/terms-of-service.html"
+         target="_blank" rel="noopener noreferrer">Terms of Service</a>
+
+      <a href="https://discord.gg/kME469thr6"
+         target="_blank" rel="noopener noreferrer">Support</a>
+    </nav>
+
+    <div class="copyright">
+      © 2026 RykenRealm. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+const menuButton = document.getElementById("menuButton");
+const closeButton = document.getElementById("closeButton");
+const overlay = document.getElementById("overlay");
+const sidebar = document.getElementById("sidebar");
+
+function openMenu() {
+  document.body.classList.add("menu-open");
+  menuButton.setAttribute("aria-expanded", "true");
+  sidebar.setAttribute("aria-hidden", "false");
+}
+
+function closeMenu() {
+  document.body.classList.remove("menu-open");
+  menuButton.setAttribute("aria-expanded", "false");
+  sidebar.setAttribute("aria-hidden", "true");
+}
+
+menuButton.addEventListener("click", openMenu);
+closeButton.addEventListener("click", closeMenu);
+overlay.addEventListener("click", closeMenu);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMenu();
+});
+
+sidebar.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", closeMenu);
+});
+</script>
+
+</body>
+  </html>
