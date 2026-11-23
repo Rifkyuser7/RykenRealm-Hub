@@ -1075,3 +1075,73 @@ footer {
 <section class="container">
   <div class="cta">
     <span class="section-
+label">START YOUR JOURNEY</span>
+
+<h2>Ready to Explore RykenRealm?</h2>
+
+<p>
+  Start your journey, discover new features,
+  and experience everything RykenRealm has to offer.
+</p>
+
+<a
+  class="button button-primary"
+  href="https://discord.com/oauth2/authorize?client_id=1540888527745716285"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Invite RykenRealm <span>↗</span>
+</a>
+
+  </div>
+</section></main><footer>
+  <div class="container footer-inner">
+    <p class="footer-copy">
+      © 2026 RykenRealm. All rights reserved.
+    </p><div class="footer-links">
+  <a href="https://rifkyuser7.github.io/rykenrealm-legal/privacy-policy.html">
+    Privacy Policy
+  </a>
+
+  <a href="https://rifkyuser7.github.io/rykenrealm-legal/terms-of-service.html">
+    Terms of Service
+  </a>
+
+  <a href="https://discord.gg/kME469thr6"
+     target="_blank"
+     rel="noopener noreferrer">
+    Support
+  </a>
+
+  <a href="https://rifkyuser7.github.io/rykenrealm-legal/">
+    Legal Center
+  </a>
+</div>
+
+  </div>
+</footer><script>
+const menuButton = document.getElementById("menuButton");
+const closeButton = document.getElementById("closeButton");
+const overlay = document.getElementById("overlay");
+
+function openMenu() {
+  document.body.classList.add("menu-open");
+  menuButton.setAttribute("aria-expanded", "true");
+}
+
+function closeMenu() {
+  document.body.classList.remove("menu-open");
+  menuButton.setAttribute("aria-expanded", "false");
+}
+
+menuButton.addEventListener("click", openMenu);
+closeButton.addEventListener("click", closeMenu);
+overlay.addEventListener("click", closeMenu);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeMenu();
+  }
+});
+</script></body>
+</html>
